@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as B2cRouteImport } from './routes/b2c'
 import { Route as B2bRouteImport } from './routes/b2b'
-import { Route as IndexRouteImport } from './routes/index'
 
 const B2cRoute = B2cRouteImport.update({
   id: '/b2c',
@@ -23,38 +22,29 @@ const B2bRoute = B2bRouteImport.update({
   path: '/b2b',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/b2b': typeof B2bRoute
   '/b2c': typeof B2cRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/b2b': typeof B2bRoute
   '/b2c': typeof B2cRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/b2b': typeof B2bRoute
   '/b2c': typeof B2cRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/b2b' | '/b2c'
+  fullPaths: '/b2b' | '/b2c'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/b2b' | '/b2c'
-  id: '__root__' | '/' | '/b2b' | '/b2c'
+  to: '/b2b' | '/b2c'
+  id: '__root__' | '/b2b' | '/b2c'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   B2bRoute: typeof B2bRoute
   B2cRoute: typeof B2cRoute
 }
@@ -75,21 +65,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof B2bRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   B2bRoute: B2bRoute,
   B2cRoute: B2cRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
