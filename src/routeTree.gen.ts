@@ -8,12 +8,12 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root.tsx'
-import { Route as B2cRouteImport } from './routes/b2c.tsx'
-import { Route as B2bRouteImport } from './routes/b2b.tsx'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as B2cRouteImport } from './routes/b2c'
+import { Route as B2bRouteImport } from './routes/b2b'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as GardenIndexRouteImport } from './routes/garden.index.tsx'
-import { Route as GardenPlantIdRouteImport } from './routes/garden.$plantId.tsx'
+import { Route as GardenIndexRouteImport } from './routes/garden.index'
+import { Route as GardenPlantIdRouteImport } from './routes/garden.$plantId'
 
 const B2cRoute = B2cRouteImport.update({
   id: '/b2c',
