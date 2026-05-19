@@ -8,10 +8,12 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as B2cRouteImport } from './routes/b2c'
-import { Route as B2bRouteImport } from './routes/b2b'
+import { Route as rootRouteImport } from './routes/__root.tsx'
+import { Route as B2cRouteImport } from './routes/b2c.tsx'
+import { Route as B2bRouteImport } from './routes/b2b.tsx'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GardenIndexRouteImport } from './routes/garden.index.tsx'
+import { Route as GardenPlantIdRouteImport } from './routes/garden.$plantId.tsx'
 
 const B2cRoute = B2cRouteImport.update({
   id: '/b2c',
@@ -28,35 +30,53 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GardenIndexRoute = GardenIndexRouteImport.update({
+  id: '/garden/',
+  path: '/garden/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GardenPlantIdRoute = GardenPlantIdRouteImport.update({
+  id: '/garden/$plantId',
+  path: '/garden/$plantId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/b2b': typeof B2bRoute
   '/b2c': typeof B2cRoute
+  '/garden/$plantId': typeof GardenPlantIdRoute
+  '/garden/': typeof GardenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/b2b': typeof B2bRoute
   '/b2c': typeof B2cRoute
+  '/garden/$plantId': typeof GardenPlantIdRoute
+  '/garden': typeof GardenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/b2b': typeof B2bRoute
   '/b2c': typeof B2cRoute
+  '/garden/$plantId': typeof GardenPlantIdRoute
+  '/garden/': typeof GardenIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/b2b' | '/b2c'
+  fullPaths: '/' | '/b2b' | '/b2c' | '/garden/$plantId' | '/garden/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/b2b' | '/b2c'
-  id: '__root__' | '/' | '/b2b' | '/b2c'
+  to: '/' | '/b2b' | '/b2c' | '/garden/$plantId' | '/garden'
+  id: '__root__' | '/' | '/b2b' | '/b2c' | '/garden/$plantId' | '/garden/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   B2bRoute: typeof B2bRoute
   B2cRoute: typeof B2cRoute
+  GardenPlantIdRoute: typeof GardenPlantIdRoute
+  GardenIndexRoute: typeof GardenIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/garden/': {
+      id: '/garden/'
+      path: '/garden'
+      fullPath: '/garden/'
+      preLoaderRoute: typeof GardenIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/garden/$plantId': {
+      id: '/garden/$plantId'
+      path: '/garden/$plantId'
+      fullPath: '/garden/$plantId'
+      preLoaderRoute: typeof GardenPlantIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,7 +123,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   B2bRoute: B2bRoute,
   B2cRoute: B2cRoute,
+  GardenPlantIdRoute: GardenPlantIdRoute,
+  GardenIndexRoute: GardenIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

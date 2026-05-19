@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sprout, Smartphone, Building2, ArrowRight } from "lucide-react";
+import { Sprout, Flower2,Smartphone, Building2, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -24,7 +24,7 @@ function Index() {
             <Sprout className="h-6 w-6 text-primary" />
             PLANTATIO
           </div>
-          <div className="text-xs text-muted-foreground">Prototype · MVP</div>
+          <div className="text-xs text-muted-foreground">Prototype</div>
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-6 py-16">
@@ -40,9 +40,7 @@ function Index() {
               Plant smarter.<br />Restore at scale.
             </h1>
             <p className="mt-4 max-w-xl text-base opacity-90">
-              From a single monstera on your balcony to thousand-hectare reforestation
-              projects — one cognitive platform connecting probes, weather, agents and
-              audited carbon.
+              Scaling from urban gardens to thousand-hectare carbon sinks. A singular cognitive engine integrating smart probes, satellite intelligence, autonomous AI, and audited ESG compliance
             </p>
           </div>
         </section>
@@ -52,14 +50,13 @@ function Index() {
             to="/b2c"
             className="group rounded-2xl border bg-card p-8 transition-all hover:-translate-y-0.5 hover:shadow-lg"
           >
-            <Smartphone className="h-8 w-8 text-primary" />
-            <h2 className="mt-4 text-xl font-semibold">B2C — Hobby & Urban Gardening</h2>
+          <Flower2 className="h-8 w-8 text-primary" />
+            <h2 className="mt-4 text-xl font-semibold">Plantatio For Hobby</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Mobile-first plant cards, scan-to-context, weather-synced care, and a
-              cognitive assistant for visual diagnostics.
+              Empowering plant owners with live IoT telemetry, Omni-Scan AI context, weather-adaptive care plans, and a Vision AI assistant for instant diagnostics.
             </p>
             <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
-              Open mobile experience{" "}
+              Explore Plantatio For Hobby{" "}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
@@ -68,10 +65,9 @@ function Index() {
             className="group rounded-2xl border bg-card p-8 transition-all hover:-translate-y-0.5 hover:shadow-lg"
           >
             <Building2 className="h-8 w-8 text-primary" />
-            <h2 className="mt-4 text-xl font-semibold">B2B — Corporate ESG</h2>
+            <h2 className="mt-4 text-xl font-semibold">Plantatio For Business</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              High-density desktop dashboard for restoration: macro data map, IoT
-              orchestration, audited carbon reporting.
+              Enterprise command center for large-scale reforestation. Featuring satellite ML audits, predictive AI pipelines, IoT orchestration, and verified ESG carbon reporting.
             </p>
             <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
               Open enterprise console{" "}

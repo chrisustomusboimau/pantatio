@@ -28,7 +28,7 @@ export const plantProfile = {
 };
 
 export const weatherAlert = {
-  city: "Lisbon",
+  city: "Jakarta",
   tempC: 28,
   condition: "Sunny",
   humidity: 41,
@@ -42,7 +42,7 @@ export const weatherAlert = {
   alert: {
     level: "warning",
     title: "Heatwave incoming in 48h",
-    body: "Watering schedule auto-shifted to 06:00 + extra cycle at 21:00 for 5 plants.",
+    body: "",
   },
 };
 

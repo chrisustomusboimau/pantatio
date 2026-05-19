@@ -3,32 +3,59 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ImagePlus, Send, Sparkles } from "lucide-react";
+import { Camera, Send, Sparkles } from "lucide-react"; 
 import { chatHistory } from "@/data/mockData";
 
-// TODO: replace with streaming endpoint backed by LLM (e.g. /api/b2c/chat)
-// using GraphRAG over the plant knowledge base + uploaded image embeddings.
 export function CognitiveAssistant() {
   const [messages, setMessages] = useState(chatHistory);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
 
-  const send = (text: string) => {
+  // Ubah fungsi send menjadi asynchronous
+  const send = async (text: string) => {
     if (!text.trim()) return;
+    
+    // 1. Tambahkan pesan user ke UI
     setMessages((m) => [...m, { role: "user", text }]);
     setInput("");
     setThinking(true);
-    setTimeout(() => {
+
+    try {
+      // 2. Kirim request ke FastAPI Backend
+      // Pastikan URL sesuai dengan port uvicorn Anda (biasanya 8000)
+      const response = await fetch("http://localhost:8000/api/b2c/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: text }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil respon dari server");
+      }
+
+      // 3. Ambil hasil JSON dari backend
+      const data = await response.json();
+
+      // 4. Masukkan pesan dari backend (assistant) ke UI
+      setMessages((m) => [...m, data]);
+      
+    } catch (error) {
+      console.error("Error fetching chat:", error);
+      // Tampilkan pesan error jika server mati
       setMessages((m) => [
         ...m,
         {
           role: "assistant",
-          text: "Got it. I've cross-checked your plant against 12k similar cases. Adjusting your care plan now.",
-          tags: ["Plan updated", "Confidence: 88%"],
+          text: "Maaf, server backend tidak dapat dihubungi saat ini.",
+          tags: ["Error"],
         },
       ]);
+    } finally {
+      // 5. Matikan status loading
       setThinking(false);
-    }, 1100);
+    }
   };
 
   return (
@@ -69,10 +96,10 @@ export function CognitiveAssistant() {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => send("📷 Uploaded photo of yellowing leaves")}
-            title="Upload photo"
+            onClick={() => send("📷 [Photo captured] Please analyze these leaves.")}
+            title="Take a photo"
           >
-            <ImagePlus className="h-4 w-4" />
+            <Camera className="h-4 w-4" />
           </Button>
           <Input
             placeholder="Ask about your plant…"

@@ -6,13 +6,19 @@ import { MacroDataMap } from "./MacroDataMap";
 import { DeviceManager } from "./DeviceManager";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { InsightEngine } from "./InsightEngine";
+import { MessageSquareCode } from "lucide-react"; // Icon yang lebih teknis
+import { MLPredictionManager } from "./MLPredictionManager";
+import { BrainCircuit } from "lucide-react"; // Icon untuk ML
 
-type View = "dashboard" | "map" | "devices";
+type View = "dashboard" | "map" | "devices" | "insights" | "predictions";
 
 const NAV: { key: View; label: string; icon: React.ReactNode }[] = [
   { key: "dashboard", label: "ESG Analytics", icon: <BarChart3 className="h-4 w-4" /> },
   { key: "map", label: "Macro Data Map", icon: <Map className="h-4 w-4" /> },
   { key: "devices", label: "Device Manager", icon: <Cpu className="h-4 w-4" /> },
+  { key: "insights", label: "Insight Engine", icon: <MessageSquareCode className="h-4 w-4" /> },
+  // { key: "predictions", label: "ML Predictions", icon: <BrainCircuit className="h-4 w-4" /> }, // Tab baru
 ];
 
 export function B2BMainLayout() {
@@ -63,6 +69,8 @@ export function B2BMainLayout() {
           {view === "dashboard" && <ESGAnalyticsDashboard />}
           {view === "map" && <MacroDataMap />}
           {view === "devices" && <DeviceManager />}
+          {view === "insights" && <InsightEngine />}
+          {view === "predictions" && <MLPredictionManager />}
         </main>
       </div>
     </div>
