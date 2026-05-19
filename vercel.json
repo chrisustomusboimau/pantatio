@@ -1,9 +1,22 @@
 {
-  "framework": null,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/client",
+  "builds": [
+    {
+      "src": "dist/client/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
-    { "src": "^/api/(.*)", "dest": "/api/$1" },
-    { "src": "^/(.*)", "dest": "/index.html" }
+    {
+      "src": "^/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "^(?!/api/).*",
+      "dest": "/index.html"
+    }
   ]
 }

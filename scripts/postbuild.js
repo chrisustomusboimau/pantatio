@@ -1,43 +1,35 @@
 import fs from "fs";
 import path from "path";
 
-const clientDir = path.resolve("dist/client");
-const assetsDir = path.join(clientDir, "assets");
+const dist = "dist/client";
+const assetsDir = path.join(dist, "assets");
 
 if (!fs.existsSync(assetsDir)) {
-  console.error("❌ assets folder not found:", assetsDir);
+  console.error("❌ assets folder not found");
   process.exit(1);
 }
 
-const files = fs.readdirSync(assetsDir);
+const jsFile = fs
+  .readdirSync(assetsDir)
+  .find((f) => f.endsWith(".js"));
 
-// cari JS entry utama
-const entry = files.find(
-  (f) =>
-    f.startsWith("index-") &&
-    f.endsWith(".js") &&
-    !f.includes("server")
-);
-
-if (!entry) {
-  console.error("❌ JS entry not found in assets");
+if (!jsFile) {
+  console.error("❌ JS bundle not found");
   process.exit(1);
 }
 
 const html = `<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pantatio</title>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="module" src="/assets/${entry}"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Static Prototype</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/assets/${jsFile}"></script>
+  </body>
 </html>
 `;
 
-fs.writeFileSync(path.join(clientDir, "index.html"), html);
-
-console.log("✅ Fake index.html generated:", entry);
+fs.writeFileSync(path.join(dist, "index.html"), html);
+console.log("✅ Fake index.html generated");
